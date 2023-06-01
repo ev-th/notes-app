@@ -8,7 +8,10 @@ class NotesView {
 
     this.button.addEventListener('click', () => {
       const newNote = this.textBox.value;
-      this.addNote(newNote);
+      this.client.createNote(newNote, (data) => {
+        this.model.setNotes(data);
+        this.displayNotes();
+      })
     })
   }
 
@@ -31,13 +34,15 @@ class NotesView {
   displayNotesFromApi() {
     this.client.loadNotes(notes => {
       this.model.setNotes(notes);
+      this.displayNotes();
     })
-    this.displayNotes();
   }
 
   hideNotes() {
     this.mainContainerEl.querySelectorAll('.note').forEach(note => note.remove());
   }
+
+
 }
 
 module.exports = NotesView;

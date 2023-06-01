@@ -56,4 +56,18 @@ describe ('NotesView', () => {
     view.button.click();
     expect(view.textBox.value).toEqual('')
   })
+
+  it("displayNotesFromApi displays all notes", () => {
+    const client = new NotesClient();
+    
+    client.loadNotes.mockImplementation((callback) => {
+      callback(['note 1', 'note 2'])
+    });
+    
+    const model = new NotesModel();
+    const view = new NotesView(model, client);
+    view.displayNotesFromApi();
+    
+    expect(document.querySelectorAll(".note").length).toEqual(2);
+  })
 })
